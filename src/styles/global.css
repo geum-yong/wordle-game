@@ -1,0 +1,12 @@
+@import "../components/Header/style.css";
+@import "../components/AppContainer/style.css";
+@import "../components/Game/style.css";
+
+
+*, *::before, *::after {
+  color: #fff;
+}
+
+#app {
+  background-color: #000;
+}

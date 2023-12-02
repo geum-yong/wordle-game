@@ -10,7 +10,7 @@
   "devDependencies": {
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
-    "live-server": "^1.2.2",
+    "live-server": "1.2.1",
     "prettier": "3.1.0"
   }
 }
