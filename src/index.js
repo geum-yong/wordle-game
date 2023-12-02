@@ -1,6 +1,6 @@
 import onRenderHeader from "./components/Header/index.js";
 import onRenderAppContainer from "./components/AppContainer/index.js";
-import onRenderGameContainer from "./components/GameContainer/index.js";
+import onRenderGame from "./components/Game/index.js";
 
 const app = document.getElementById("app");
 
@@ -16,9 +16,9 @@ window.addEventListener("DOMContentLoaded", () => {
   const { element: Header } = onRenderHeader("Wordle");
   onCreateComponent({ parentElement: Appcontainer, childElement: Header });
 
-  const { element: GameContainer } = onRenderGameContainer();
+  const { element: Game } = onRenderGame();
   onCreateComponent({
     parentElement: Appcontainer,
-    childElement: GameContainer,
+    childElement: Game,
   });
 });

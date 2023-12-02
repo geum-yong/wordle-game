@@ -1,6 +1,6 @@
 @import "../components/Header/style.css";
 @import "../components/AppContainer/style.css";
-@import "../components/GameContainer/style.css";
+@import "../components/Game/style.css";
 
 
 *, *::before, *::after {
