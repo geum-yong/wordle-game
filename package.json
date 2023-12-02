@@ -1,0 +1,16 @@
+{
+  "name": "wordle-game",
+  "version": "1.0.0",
+  "repository": "git@github.com:geum-yong/wordle-game.git",
+  "author": "Ben <geumyong@carrotins.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "live-server --entry-file=index.html"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "live-server": "^1.2.2",
+    "prettier": "3.1.0"
+  }
+}
