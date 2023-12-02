@@ -1,0 +1,10 @@
+@import "../components/Header/style.css";
+
+
+*, *::before, *::after {
+  color: #fff;
+}
+
+#app {
+  background-color: #000;
+}
