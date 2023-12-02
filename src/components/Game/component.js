@@ -4,7 +4,7 @@ const Game = () => {
 
   gameContainerElement.innerHTML = `
     <div class="boardContainer">
-      <div class="board">
+      <div id="board" class="board">
         <div class="boardRow">
           <div class="boardTile"></div>
           <div class="boardTile"></div>

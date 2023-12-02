@@ -16,9 +16,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const { element: Header } = onRenderHeader("Wordle");
   onCreateComponent({ parentElement: Appcontainer, childElement: Header });
 
-  const { element: Game } = onRenderGame();
+  const { element: Game, event: GameEvent } = onRenderGame();
   onCreateComponent({
     parentElement: Appcontainer,
     childElement: Game,
+    event: GameEvent,
   });
 });
