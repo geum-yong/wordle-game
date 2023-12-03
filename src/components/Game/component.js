@@ -55,7 +55,7 @@ const Game = () => {
       </div>
     </div>
     
-    <div class="keyboard">
+    <div id="keyboard" class="keyboard">
       <div class="keyboardRow">
         <button class="keyboardKey">Q</button>
         <button class="keyboardKey">W</button>
@@ -84,7 +84,7 @@ const Game = () => {
       </div>
       
       <div class="keyboardRow">
-        <button class="keyboardKey keyboardOneAndHalf">ENTER</button>
+        <button id="enterKey" class="keyboardKey keyboardOneAndHalf">ENTER</button>
         <button class="keyboardKey">Z</button>
         <button class="keyboardKey">X</button>
         <button class="keyboardKey">C</button>
@@ -92,7 +92,7 @@ const Game = () => {
         <button class="keyboardKey">B</button>
         <button class="keyboardKey">N</button>
         <button class="keyboardKey">M</button>
-        <button class="keyboardKey keyboardOneAndHalf"><-</button>
+        <button id="backKey" class="keyboardKey keyboardOneAndHalf">BACK</button>
       </div>
     </div>
   `;
