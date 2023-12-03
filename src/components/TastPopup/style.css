@@ -1,0 +1,17 @@
+.toastPopup {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 10px 15px;
+  border-radius: 4px;
+  background-color: #eee;
+  font-size: 14px;
+  color: #000;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.toastPopup.view {
+  opacity: 1;
+}
