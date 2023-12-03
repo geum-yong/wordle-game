@@ -1,0 +1,172 @@
+import words from "./wordsData.js";
+import openToastPopup from "../TastPopup/event.js";
+import openGameResultPopup from "../GameResultPopup/event.js";
+
+const onResizeBoard = (board) => {
+  board.style.width = window.innerWidth > 400 ? "400px" : "100%";
+  board.style.height = window.innerHeight > 400 ? "400px" : "100%";
+};
+
+const getRandomWord = () => {
+  const randomIndex = Math.floor(Math.random() * words.length);
+  return words[randomIndex].toUpperCase();
+};
+
+const onAddEventGame = () => {
+  let selectedRandomWord = getRandomWord(); // 랜덤으로 선택된 단어
+  let gameLifeCount = 0; // 제출 횟수 (최대 6번)
+  let selectedWordCount = 0; // 한 단어당 키보드 입력 횟수 (최대 5번)
+
+  /*
+   키보드 입력값 및 일치여부
+   일치여부 : 0 -> 불일치, 1 -> 단어 존재함, 2 -> 단어 존재 및 위치 일치
+   ex) Q-1
+  */
+  let selectedWordKeys = [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
+
+  const keyboard = document.querySelector("#keyboard");
+  const boardRows = document.querySelectorAll(".boardRow");
+  const board = document.querySelector("#board");
+
+  const boardTiles = [[], [], [], [], [], []];
+  boardRows.forEach((boardRow, boardRowIndex) => {
+    boardTiles[boardRowIndex] = boardRow.children;
+  });
+
+  // window 넓이, 높이에 따른 게임 보드판 크기 세팅
+  onResizeBoard(board);
+  window.addEventListener("resize", () => onResizeBoard(board));
+
+  const resetGame = () => {
+    selectedRandomWord = getRandomWord();
+    gameLifeCount = 0;
+    selectedWordCount = 0;
+    selectedWordKeys = [
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+    ];
+
+    boardTiles.forEach((boardRow) => {
+      [...boardRow].forEach((boardTile) => {
+        boardTile.innerHTML = "";
+        boardTile.className = "boardTile";
+      });
+    });
+  };
+
+  // ENTER 클릭
+  const onClickEnterKey = () => {
+    // 정답 단어 배열
+    const selectedRandomWordsArr = selectedRandomWord.split("");
+    // 유저가 입력한 단어 배열
+    const selectedWordArr = selectedWordKeys[gameLifeCount];
+    // 유저가 입력한 단어
+    const selectedWords = selectedWordArr.join("");
+    const boardRowTitles = boardTiles[gameLifeCount];
+
+    if (selectedWordCount < 5) {
+      openToastPopup("5자를 채워주세요");
+      return;
+    }
+
+    if (!words.includes(selectedWords.toLowerCase())) {
+      openToastPopup("리스트에 없는 단어입니다.");
+      return;
+    }
+
+    selectedWordArr.forEach((selectedWordKey, selectedWordKeyIndex) => {
+      // 단어가 같고 위치가 같을 경우
+      if (selectedWordKey === selectedRandomWordsArr[selectedWordKeyIndex]) {
+        selectedWordArr[selectedWordKeyIndex] += "-2";
+        boardRowTitles[selectedWordKeyIndex].classList.add("green");
+        return;
+      }
+
+      // 정답 단어에 포함되는 경우
+      if (selectedRandomWordsArr.includes(selectedWordKey)) {
+        selectedWordArr[selectedWordKeyIndex] += "-1";
+        boardRowTitles[selectedWordKeyIndex].classList.add("yellow");
+        return;
+      }
+
+      // 포함되지 않는 경우
+      selectedWordArr[selectedWordKeyIndex] += "-0";
+      boardRowTitles[selectedWordKeyIndex].classList.add("gray");
+    });
+
+    gameLifeCount += 1;
+    selectedWordCount = 0;
+
+    const isEndGame =
+      selectedWords === selectedRandomWord || gameLifeCount === 6;
+    if (isEndGame) {
+      openGameResultPopup({
+        gameLifeCount,
+        gameResultArr: selectedWordKeys,
+        replayEvent: resetGame,
+      });
+    }
+  };
+
+  // BACK 클릭
+  const onClickBackKey = () => {
+    if (selectedWordCount === 0) return;
+    selectedWordKeys[gameLifeCount][selectedWordCount - 1] = "";
+    boardTiles[gameLifeCount][selectedWordCount - 1].innerHTML = "";
+    selectedWordCount -= 1;
+  };
+
+  // 알파벳 클릭
+  const onClickWordKey = (seletedKeyText) => {
+    if (selectedWordCount === 5) return;
+    selectedWordKeys[gameLifeCount][selectedWordCount] = seletedKeyText;
+    boardTiles[gameLifeCount][selectedWordCount].innerHTML = seletedKeyText;
+    selectedWordCount += 1;
+  };
+
+  const onClickKeyboardKey = (e) => {
+    const isKey =
+      e.target.classList.contains("keyboardKey") &&
+      !e.target.classList.contains("keyboardOneAndHalf");
+    const isEnterKey = e.target.id === "enterKey";
+    const isBackKey = e.target.id === "backKey";
+
+    if (isKey) {
+      onClickWordKey(e.target.innerHTML);
+    } else if (isEnterKey) {
+      onClickEnterKey();
+    } else if (isBackKey) {
+      onClickBackKey();
+    }
+  };
+  const onkeyupKeyboardKey = (e) => {
+    const selectedKey = e.key.toUpperCase();
+    const isAlphabeticKey = /^[a-zA-Z]$/.test(selectedKey);
+    const isEnterKey = selectedKey === "ENTER";
+    const isBackKey = selectedKey === "BACKSPACE";
+
+    if (isAlphabeticKey) {
+      onClickWordKey(selectedKey);
+    } else if (isEnterKey) {
+      onClickEnterKey();
+    } else if (isBackKey) {
+      onClickBackKey();
+    }
+  };
+
+  keyboard.addEventListener("click", onClickKeyboardKey);
+  window.addEventListener("keyup", onkeyupKeyboardKey);
+};
+
+export default onAddEventGame;

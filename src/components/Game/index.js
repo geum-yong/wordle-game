@@ -1,7 +1,10 @@
 import Game from "./component.js";
+import onAddEventGame from "./event.js";
 
 const onRenderGame = () => {
-  return { element: Game() };
+  const event = () => onAddEventGame();
+
+  return { element: Game(), event };
 };
 
 export default onRenderGame;

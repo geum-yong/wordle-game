@@ -1,9 +1,12 @@
 @import "../components/Header/style.css";
 @import "../components/AppContainer/style.css";
 @import "../components/Game/style.css";
+@import "../components/TastPopup/style.css";
+@import "../components/GameResultPopup/style.css";
 
-
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   color: #fff;
 }
 
