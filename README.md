@@ -1,7 +1,7 @@
 # Wordle 게임
 
 ## 목표
-Vanila Javascript로 wordle 게임 구현을 합니다.
+Vanilla Javascript로 wordle 게임 구현을 합니다.
 <br />
 코드 작성 컨벤션 수정 및 Javascript에 대해 다시 복습하는 시간을 갖습니다.
 
