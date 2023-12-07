@@ -7,7 +7,11 @@ const getCurrentDate = () => {
   const month = (today.getMonth() + 1).toString().padStart(2, "0");
   const day = today.getDate().toString().padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+  const hours = today.getHours().toString().padStart(2, "0");
+  const minutes = today.getMinutes().toString().padStart(2, "0");
+  const seconds = today.getSeconds().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
 const onClickShareButton = () => {
@@ -37,7 +41,8 @@ const openGameResultPopup = ({ gameLifeCount, gameResultArr, replayEvent }) => {
 
       if (result === "2") gameResultEmojiRow.innerHTML += "🟩";
       else if (result === "1") gameResultEmojiRow.innerHTML += "🟨";
-      else gameResultEmojiRow.innerHTML += "⬛";
+      else if (result === "0") gameResultEmojiRow.innerHTML += "⬛";
+      else gameResultEmojiRow.innerHTML += "⬜️";
     });
 
     gameResultEmoji.appendChild(gameResultEmojiRow);
@@ -49,7 +54,9 @@ const openGameResultPopup = ({ gameLifeCount, gameResultArr, replayEvent }) => {
     </button>
 
     <div id="gameResultBox">
-      <p class="gameResultText">Wordle ${getCurrentDate()} ${gameLifeCount}/6</p>
+      <p class="gameResultText">Wordle</p>
+      <p class="gameResultText">${getCurrentDate()}</p>
+      <p class="gameResultText">${gameLifeCount}/6</p>
       ${gameResultEmoji.innerHTML}
     </div>
     
