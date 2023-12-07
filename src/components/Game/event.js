@@ -14,6 +14,7 @@ const getRandomWord = () => {
 
 const onAddEventGame = () => {
   let selectedRandomWord = getRandomWord(); // 랜덤으로 선택된 단어
+  console.log(selectedRandomWord);
   let gameLifeCount = 0; // 제출 횟수 (최대 6번)
   let selectedWordCount = 0; // 한 단어당 키보드 입력 횟수 (최대 5번)
 
@@ -32,6 +33,7 @@ const onAddEventGame = () => {
   ];
 
   const keyboard = document.querySelector("#keyboard");
+  const alphabetKeys = document.querySelectorAll(".alphabetKey");
   const boardRows = document.querySelectorAll(".boardRow");
   const board = document.querySelector("#board");
 
@@ -63,6 +65,10 @@ const onAddEventGame = () => {
         boardTile.className = "boardTile";
       });
     });
+
+    alphabetKeys.forEach((alphabetKey) => {
+      alphabetKey.className = "keyboardKey alphabetKey";
+    });
   };
 
   // ENTER 클릭
@@ -86,10 +92,21 @@ const onAddEventGame = () => {
     }
 
     selectedWordArr.forEach((selectedWordKey, selectedWordKeyIndex) => {
+      // 입력한 알파벳 키
+      const selectedAlphabetKey = [...alphabetKeys].find((alphabetKey) => {
+        return alphabetKey.innerHTML === selectedWordKey;
+      });
+
       // 단어가 같고 위치가 같을 경우
       if (selectedWordKey === selectedRandomWordsArr[selectedWordKeyIndex]) {
         selectedWordArr[selectedWordKeyIndex] += "-2";
         boardRowTitles[selectedWordKeyIndex].classList.add("green");
+
+        const isChangeKeyColorGreen =
+          !selectedAlphabetKey.classList.contains("green");
+        if (isChangeKeyColorGreen) {
+          selectedAlphabetKey.classList.add("green");
+        }
         return;
       }
 
@@ -97,12 +114,28 @@ const onAddEventGame = () => {
       if (selectedRandomWordsArr.includes(selectedWordKey)) {
         selectedWordArr[selectedWordKeyIndex] += "-1";
         boardRowTitles[selectedWordKeyIndex].classList.add("yellow");
+
+        const isChangeKeyColorYellow =
+          !selectedAlphabetKey.classList.contains("green") &&
+          !selectedAlphabetKey.classList.contains("yellow");
+        if (isChangeKeyColorYellow) {
+          selectedAlphabetKey.classList.add("yellow");
+        }
         return;
       }
 
       // 포함되지 않는 경우
       selectedWordArr[selectedWordKeyIndex] += "-0";
       boardRowTitles[selectedWordKeyIndex].classList.add("gray");
+      selectedAlphabetKey.classList.add("gray");
+
+      const isChangeKeyColorGray =
+        !selectedAlphabetKey.classList.contains("green") &&
+        !selectedAlphabetKey.classList.contains("yellow") &&
+        !selectedAlphabetKey.classList.contains("gray");
+      if (isChangeKeyColorGray) {
+        selectedAlphabetKey.classList.add("gray");
+      }
     });
 
     gameLifeCount += 1;
