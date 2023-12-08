@@ -27,7 +27,12 @@ const onClickShareButton = () => {
   openToastPopup("게임 결과가 클립보드에 복사되었습니다");
 };
 
-const openGameResultPopup = ({ gameLifeCount, gameResultArr, replayEvent }) => {
+const openGameResultPopup = ({
+  gameLifeCount,
+  resultWord,
+  gameResultArr,
+  replayEvent,
+}) => {
   const gameResultPopup = document.querySelector("#gameResultPopup");
   const gameResultEmoji = document.createElement("div");
   gameResultEmoji.classList.add("gameResultEmoji");
@@ -55,6 +60,7 @@ const openGameResultPopup = ({ gameLifeCount, gameResultArr, replayEvent }) => {
 
     <div id="gameResultBox">
       <p class="gameResultText">Wordle</p>
+      <p class="gameResultText">정답 : ${resultWord}</p>
       <p class="gameResultText">${getCurrentDate()}</p>
       <p class="gameResultText">${gameLifeCount}/6</p>
       ${gameResultEmoji.innerHTML}

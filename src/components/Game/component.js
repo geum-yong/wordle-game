@@ -2,100 +2,92 @@ const Game = () => {
   const gameContainerElement = document.createElement("main");
   gameContainerElement.classList.add("gameContainer");
 
-  gameContainerElement.innerHTML = `
-    <div class="boardContainer">
-      <div id="board" class="board">
-        <div class="boardRow">
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-        </div>
-        
-        <div class="boardRow">
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-        </div>
-        
-        <div class="boardRow">
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-        </div>
-        
-        <div class="boardRow">
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-        </div>
-        
-        <div class="boardRow">
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-        </div>
-        
-        <div class="boardRow">
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-          <div class="boardTile"></div>
-        </div>
-      </div>
-    </div>
-    
-    <div id="keyboard" class="keyboard">
-      <div class="keyboardRow">
-        <button class="keyboardKey alphabetKey">Q</button>
-        <button class="keyboardKey alphabetKey">W</button>
-        <button class="keyboardKey alphabetKey">E</button>
-        <button class="keyboardKey alphabetKey">R</button>
-        <button class="keyboardKey alphabetKey">T</button>
-        <button class="keyboardKey alphabetKey">Y</button>
-        <button class="keyboardKey alphabetKey">U</button>
-        <button class="keyboardKey alphabetKey">I</button>
-        <button class="keyboardKey alphabetKey">O</button>
-        <button class="keyboardKey alphabetKey">P</button>
-      </div>
-      
-      <div class="keyboardRow">
-        <div class="keyboardHalf"></div>
-        <button class="keyboardKey alphabetKey">A</button>
-        <button class="keyboardKey alphabetKey">S</button>
-        <button class="keyboardKey alphabetKey">D</button>
-        <button class="keyboardKey alphabetKey">F</button>
-        <button class="keyboardKey alphabetKey">G</button>
-        <button class="keyboardKey alphabetKey">H</button>
-        <button class="keyboardKey alphabetKey">J</button>
-        <button class="keyboardKey alphabetKey">K</button>
-        <button class="keyboardKey alphabetKey">L</button>
-        <div class="keyboardHalf"></div>
-      </div>
-      
-      <div class="keyboardRow">
-        <button id="enterKey" class="keyboardKey keyboardOneAndHalf">ENTER</button>
-        <button class="keyboardKey alphabetKey">Z</button>
-        <button class="keyboardKey alphabetKey">X</button>
-        <button class="keyboardKey alphabetKey">C</button>
-        <button class="keyboardKey alphabetKey">V</button>
-        <button class="keyboardKey alphabetKey">B</button>
-        <button class="keyboardKey alphabetKey">N</button>
-        <button class="keyboardKey alphabetKey">M</button>
-        <button id="backKey" class="keyboardKey keyboardOneAndHalf">BACK</button>
-      </div>
-    </div>
-  `;
+  // 게임 보드판 구성 start
+  const boardContainerElement = document.createElement("div");
+  boardContainerElement.classList.add("boardContainer");
+
+  const boardElement = document.createElement("div");
+  boardElement.id = "board";
+  boardElement.classList.add("board");
+
+  for (let boardRowCount = 0; boardRowCount < 6; boardRowCount++) {
+    const boardRowElement = document.createElement("div");
+    boardRowElement.classList.add("boardRow");
+
+    for (let boardTileCount = 0; boardTileCount < 5; boardTileCount++) {
+      const boardTileElement = document.createElement("div");
+      boardTileElement.classList.add("boardTile");
+      boardRowElement.appendChild(boardTileElement);
+    }
+
+    boardElement.appendChild(boardRowElement);
+  }
+
+  boardContainerElement.appendChild(boardElement);
+  gameContainerElement.appendChild(boardContainerElement);
+  // 게임 보드판 구성 end
+
+  // 키보드 구성 start
+  const keyboardElement = document.createElement("div");
+  keyboardElement.id = "keyboard";
+  keyboardElement.classList.add("keyboard");
+
+  for (let keyboardRowCount = 0; keyboardRowCount < 3; keyboardRowCount++) {
+    const keyboardRowElement = document.createElement("div");
+    keyboardRowElement.classList.add("keyboardRow");
+
+    let keyArr = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+    if (keyboardRowCount === 1) {
+      keyArr = ["HALF", "A", "S", "D", "F", "G", "H", "J", "K", "L", "HALF"];
+    } else if (keyboardRowCount === 2) {
+      keyArr = ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACK"];
+    }
+
+    for (
+      let keyboardKeyCount = 0;
+      keyboardKeyCount < keyArr.length;
+      keyboardKeyCount++
+    ) {
+      let keyboardKeyElement;
+
+      switch (keyArr[keyboardKeyCount]) {
+        case "HALF": {
+          keyboardKeyElement = document.createElement("div");
+          keyboardKeyElement.classList.add("keyboardHalf");
+          break;
+        }
+
+        case "ENTER": {
+          keyboardKeyElement = document.createElement("button");
+          keyboardKeyElement.id = "enterKey";
+          keyboardKeyElement.className = "keyboardKey keyboardOneAndHalf";
+          keyboardKeyElement.innerHTML = "ENTER";
+          break;
+        }
+
+        case "BACK": {
+          keyboardKeyElement = document.createElement("button");
+          keyboardKeyElement.id = "backKey";
+          keyboardKeyElement.className = "keyboardKey keyboardOneAndHalf";
+          keyboardKeyElement.innerHTML = "BACK";
+          break;
+        }
+
+        default: {
+          keyboardKeyElement = document.createElement("button");
+          keyboardKeyElement.className = "keyboardKey alphabetKey";
+          keyboardKeyElement.innerHTML = keyArr[keyboardKeyCount];
+        }
+      }
+
+      keyboardRowElement.appendChild(keyboardKeyElement);
+    }
+
+    keyboardElement.appendChild(keyboardRowElement);
+  }
+
+  gameContainerElement.appendChild(keyboardElement);
+  // 키보드 구성 end
 
   return gameContainerElement;
 };
