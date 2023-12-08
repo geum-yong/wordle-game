@@ -146,6 +146,7 @@ const onAddEventGame = () => {
     if (isEndGame) {
       openGameResultPopup({
         gameLifeCount,
+        resultWord: selectedRandomWord,
         gameResultArr: selectedWordKeys,
         replayEvent: resetGame,
       });
