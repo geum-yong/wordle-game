@@ -2,6 +2,18 @@ import words from "./wordsData.js";
 import openToastPopup from "../TastPopup/event.js";
 import openGameResultPopup from "../GameResultPopup/event.js";
 
+const findIndexAll = (arr, condition) => {
+  const result = [];
+
+  arr.forEach((element, index) => {
+    if (condition(element, index, arr)) {
+      result.push(index);
+    }
+  });
+
+  return result;
+};
+
 const onResizeBoard = (board) => {
   board.style.width = window.innerWidth > 400 ? "400px" : "100%";
   board.style.height = window.innerHeight > 400 ? "400px" : "100%";
@@ -12,9 +24,59 @@ const getRandomWord = () => {
   return words[randomIndex].toUpperCase();
 };
 
+const checkGreenWord = ({
+  selectedWordArr,
+  selectedWordKeyIndex,
+  boardRowTitles,
+  selectedAlphabetKey,
+}) => {
+  selectedWordArr[selectedWordKeyIndex] += "-2";
+  boardRowTitles[selectedWordKeyIndex].classList.add("green");
+
+  const isChangeKeyColorGreen =
+    !selectedAlphabetKey.classList.contains("green");
+  if (isChangeKeyColorGreen) {
+    selectedAlphabetKey.classList.add("green");
+  }
+};
+
+const checkYellowWord = ({
+  selectedWordArr,
+  selectedWordKeyIndex,
+  boardRowTitles,
+  selectedAlphabetKey,
+}) => {
+  selectedWordArr[selectedWordKeyIndex] += "-1";
+  boardRowTitles[selectedWordKeyIndex].classList.add("yellow");
+
+  const isChangeKeyColorYellow =
+    !selectedAlphabetKey.classList.contains("green") &&
+    !selectedAlphabetKey.classList.contains("yellow");
+  if (isChangeKeyColorYellow) {
+    selectedAlphabetKey.classList.add("yellow");
+  }
+};
+
+const checkGrayWord = ({
+  selectedWordArr,
+  selectedWordKeyIndex,
+  boardRowTitles,
+  selectedAlphabetKey,
+}) => {
+  selectedWordArr[selectedWordKeyIndex] += "-0";
+  boardRowTitles[selectedWordKeyIndex].classList.add("gray");
+
+  const isChangeKeyColorGray =
+    !selectedAlphabetKey.classList.contains("green") &&
+    !selectedAlphabetKey.classList.contains("yellow") &&
+    !selectedAlphabetKey.classList.contains("gray");
+  if (isChangeKeyColorGray) {
+    selectedAlphabetKey.classList.add("gray");
+  }
+};
+
 const onAddEventGame = () => {
   let selectedRandomWord = getRandomWord(); // 랜덤으로 선택된 단어
-  console.log(selectedRandomWord);
   let gameLifeCount = 0; // 제출 횟수 (최대 6번)
   let selectedWordCount = 0; // 한 단어당 키보드 입력 횟수 (최대 5번)
 
@@ -99,43 +161,79 @@ const onAddEventGame = () => {
 
       // 단어가 같고 위치가 같을 경우
       if (selectedWordKey === selectedRandomWordsArr[selectedWordKeyIndex]) {
-        selectedWordArr[selectedWordKeyIndex] += "-2";
-        boardRowTitles[selectedWordKeyIndex].classList.add("green");
-
-        const isChangeKeyColorGreen =
-          !selectedAlphabetKey.classList.contains("green");
-        if (isChangeKeyColorGreen) {
-          selectedAlphabetKey.classList.add("green");
-        }
+        checkGreenWord({
+          selectedWordArr,
+          selectedWordKeyIndex,
+          boardRowTitles,
+          selectedAlphabetKey,
+        });
+        selectedRandomWordsArr[selectedWordKeyIndex] = "";
         return;
       }
 
       // 정답 단어에 포함되는 경우
-      if (selectedRandomWordsArr.includes(selectedWordKey)) {
-        selectedWordArr[selectedWordKeyIndex] += "-1";
-        boardRowTitles[selectedWordKeyIndex].classList.add("yellow");
+      const sameSelectedRandomWordIndexArr = findIndexAll(
+        selectedRandomWordsArr,
+        (selectedRandomWord) => selectedRandomWord === selectedWordKey,
+      );
+      if (sameSelectedRandomWordIndexArr.length > 0) {
+        for (
+          let sameSelectedRandomWordIndexCount = 0;
+          sameSelectedRandomWordIndexCount <
+          sameSelectedRandomWordIndexArr.length;
+          sameSelectedRandomWordIndexCount++
+        ) {
+          const sameSelectedRandomWordIndex =
+            sameSelectedRandomWordIndexArr[sameSelectedRandomWordIndexCount];
 
-        const isChangeKeyColorYellow =
-          !selectedAlphabetKey.classList.contains("green") &&
-          !selectedAlphabetKey.classList.contains("yellow");
-        if (isChangeKeyColorYellow) {
-          selectedAlphabetKey.classList.add("yellow");
+          if (sameSelectedRandomWordIndex > selectedWordKeyIndex) {
+            if (
+              selectedRandomWordsArr[sameSelectedRandomWordIndex] ===
+              selectedWordArr[sameSelectedRandomWordIndex]
+            ) {
+              if (
+                sameSelectedRandomWordIndexCount ===
+                sameSelectedRandomWordIndexArr.length - 1
+              ) {
+                checkGrayWord({
+                  selectedWordArr,
+                  selectedWordKeyIndex,
+                  boardRowTitles,
+                  selectedAlphabetKey,
+                });
+              }
+            } else {
+              checkYellowWord({
+                selectedWordArr,
+                selectedWordKeyIndex,
+                boardRowTitles,
+                selectedAlphabetKey,
+              });
+              selectedRandomWordsArr[sameSelectedRandomWordIndex] = "";
+              break;
+            }
+          } else {
+            checkYellowWord({
+              selectedWordArr,
+              selectedWordKeyIndex,
+              boardRowTitles,
+              selectedAlphabetKey,
+            });
+            selectedRandomWordsArr[sameSelectedRandomWordIndex] = "";
+            break;
+          }
         }
+
         return;
       }
 
       // 포함되지 않는 경우
-      selectedWordArr[selectedWordKeyIndex] += "-0";
-      boardRowTitles[selectedWordKeyIndex].classList.add("gray");
-      selectedAlphabetKey.classList.add("gray");
-
-      const isChangeKeyColorGray =
-        !selectedAlphabetKey.classList.contains("green") &&
-        !selectedAlphabetKey.classList.contains("yellow") &&
-        !selectedAlphabetKey.classList.contains("gray");
-      if (isChangeKeyColorGray) {
-        selectedAlphabetKey.classList.add("gray");
-      }
+      checkGrayWord({
+        selectedWordArr,
+        selectedWordKeyIndex,
+        boardRowTitles,
+        selectedAlphabetKey,
+      });
     });
 
     gameLifeCount += 1;
