@@ -1,0 +1,91 @@
+.gameContainer {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+.boardContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 5px;
+  padding: 10px;
+}
+
+.boardRow {
+  flex: 1;
+  display: flex;
+  gap: 5px;
+}
+
+.boardTile {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  border: 1px solid #565758;
+  border-radius: 4px;
+}
+
+.boardTile.green,
+.alphabetKey.green {
+  background-color: #6aaa64;
+}
+
+.boardTile.yellow,
+.alphabetKey.yellow {
+  background-color: #c9b458;
+}
+
+.boardTile.gray,
+.alphabetKey.gray {
+  background-color: #787c7e;
+}
+
+.keyboard {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 8px;
+  padding: 8px;
+  height: 200px;
+}
+
+.keyboardRow {
+  flex: 1;
+  display: flex;
+}
+
+.keyboardKey {
+  flex: 1;
+  margin-right: 6px;
+  height: 100%;
+  border-radius: 4px;
+  background-color: #3a3a3c;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.keyboardKey:last-of-type {
+  margin-right: 0;
+}
+
+.keyboardHalf {
+  flex: 0.5;
+}
+
+.keyboardOneAndHalf {
+  flex: 1.5;
+  font-size: 12px;
+}
